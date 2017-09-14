@@ -64,7 +64,10 @@
             <td> <%= link_to 'Add Students in Course', new_enrolled_path %></td>
           <% end %>
           
-          <td> <%= link_to 'View Quizzes in this Course',course_quizzes_path(course)  %></td>
+          
+          <%# if can? :read, course => Quiz %>
+            <td> <%= link_to 'View Quizzes in this Course',course_quizzes_path(course)  %></td>
+          <%# end %>
           
         <%# end %>
       </tr>

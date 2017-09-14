@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   resources :students
   resources :courses do
     resources :quizzes do
-      resources :attempts
+      resources :attempts do
+        get 'results', to: 'attempts#results'
+      end
     end
   end
   devise_for :users,controllers: { registrations: 'users/registrations' }

@@ -2,7 +2,30 @@ class AttemptsController < ApplicationController
   before_action :set_attempt, only: [:show, :edit, :update, :destroy]
   before_action :set_course
   before_action :set_quiz
+  before_action :set_student
+  # load_and_authorize_resource :except => [:results]
   
+  
+  
+  
+  
+  
+  def results
+    
+    @quiz = Quiz.find(params[:quiz_id])
+    @quiz_questions = @quiz.questions
+    # student = Student.find_by_user_id(current_user.id)
+    # @attempt = student.attempts.find_by_quiz_id(@quiz.id)
+    @attempt = Attempt.find(params[:attempt_id])
+    if(@attempt.nil?)
+      flash[:notice] = 'You Have not attempted the quiz'
+      redirect_to course_quizzes_path(@course)
+    else
+      @responses = @attempt.responses
+    end
+        
+  end
+    
 
   # GET /attempts
   # GET /attempts.json
@@ -18,10 +41,13 @@ class AttemptsController < ApplicationController
   # GET /attempts/new
   def new
     @attempt = Attempt.new
+    # @quiz.questions.count.times
+    # @attempt.responses.new
   end
 
   # GET /attempts/1/edit
   def edit
+    @resp = @attempt.responses
   end
 
   # POST /attempts
@@ -31,7 +57,7 @@ class AttemptsController < ApplicationController
 
     respond_to do |format|
       if @attempt.save
-        format.html { redirect_to courses_path, notice: 'Quiz Responses successfully submitted' }
+        format.html { redirect_to course_quiz_results_url(@course,@quiz), notice: 'Quiz Responses successfully submitted' }
         format.json { render :show, status: :created, location: @attempt }
       else
         format.html { render :new }
@@ -45,7 +71,7 @@ class AttemptsController < ApplicationController
   def update
     respond_to do |format|
       if @attempt.update(attempt_params)
-        format.html { redirect_to courses_path, notice: 'Quiz Responses successfully updated.' }
+        format.html { redirect_to course_quiz_results_url(@course,@quiz), notice: 'Quiz Responses successfully updated.' }
         format.json { render :show, status: :ok, location: @attempt }
       else
         format.html { render :edit }
@@ -76,6 +102,14 @@ class AttemptsController < ApplicationController
     def set_course
       @course = Course.find(params[:course_id])
     end
+    
+    def set_student
+      puts "we are here"
+      if(!(current_user.nil?) and (current_user.student?))
+        @stu = Student.find_by_user_id(current_user.id)
+      end
+    end
+
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def attempt_params

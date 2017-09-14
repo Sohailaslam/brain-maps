@@ -49,4 +49,7 @@ end
 
 gem 'devise'
 gem 'cancancan'
-gem 'rolify'
+# gem 'rolify'
+gem "cocoon"
+gem "chartkick"
+

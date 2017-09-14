@@ -1,5 +1,12 @@
-<%= f.label :Question %><br>
-<%= f.text_area :content,:row => 3 %><br>
-<%= f.fields_for :answers do |builder| %>
-  <%= render 'answer_fields', :f => builder %>
-<% end %>
+<div class="nested-fields">
+    <%= f.label :Question %><br>
+    <%= f.text_area :content,:row => 3 %><br>
+    <%= f.label :Learning_Outcome %><br>
+    <%= f.collection_select :learning_outcome_id, @course.learning_outcomes, :id, :title, prompt: "Select Learning Outcome" %></br>
+    
+    <%= f.fields_for :answers do |builder| %>
+      <%= render 'answer_fields', :f => builder %>
+    <% end %>
+    <%= link_to_remove_association "Remove Question", f %>
+
+</div>

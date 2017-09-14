@@ -28,6 +28,7 @@ class CoursesController < ApplicationController
   # GET /courses/new
   def new
     @course = Course.new
+    @learning_outcome = @course.learning_outcomes.new
   end
 
   # GET /courses/1/edit
@@ -93,7 +94,7 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:id,:name,:stduent_id,:status)
+      params.require(:course).permit(:id,:name,:stduent_id,:status,learning_outcomes_attributes:[:id,:title,:course_id])
       # params.require(:educator).permit(:user_id, :name, :role)
     end
 end

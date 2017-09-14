@@ -9,6 +9,9 @@ class Course < ActiveRecord::Base
     
     has_many :students,:through => :enrolled
     has_many :enrolled
-    has_many :quiz
+    has_many :quizzes
+    has_many :learning_outcomes
+    
+    accepts_nested_attributes_for :learning_outcomes, :reject_if => lambda { |a| a[:title].blank? }, :allow_destroy => true
     
 end

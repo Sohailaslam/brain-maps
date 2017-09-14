@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @attempt %> |
-<%= link_to 'Back', attempts_path %>
+<%= link_to 'Show', course_quiz_attempt_path(@course,@quiz,@attempt) %> |
+<%= link_to 'Back', course_quiz_attempts_path(@course,@quiz) %>

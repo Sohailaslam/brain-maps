@@ -23,18 +23,21 @@
     <%= f.select(:status_type, Quiz.status_types.keys.map {|key| [key.humanize, key]}) %>
   </div>
   
-  <div class="field">
-    <%= f.label :number_questions %><br>
-    <%= f.number_field :number_questions %>
+  <!--<div class="field">-->
+  <!--  <%#= f.label :number_questions %><br>-->
+  <!--  <%#= f.number_field :number_questions %>-->
+  <!--</div>-->
+  <div id="questions">
+    <%= f.fields_for :questions do |builder| %>
+      <%#= render "question_fields", :f => builder %>
+      <%#= builder.label :Question %><br>
+      <%#= builder.text_area :content,:row => 3 %><br>
+      <%= render "question_fields", :f => builder %>
+      <div class="links">
+        <%= link_to_add_association 'Add Question', f, :questions,wrap_object: Proc.new { |question| 4.times { question.answers.build }; question } %>
+      </div>
+    <% end %>
   </div>
-  
-  <%= f.fields_for :questions do |builder| %>
-    <%#= render "question_fields", :f => builder %>
-    <%#= builder.label :Question %><br>
-    <%#= builder.text_area :content,:row => 3 %><br>
-    <%= render "question_fields", :f => builder %>
-  <% end %>
-  
   <div class="actions">
     <%= f.submit %>
   </div>

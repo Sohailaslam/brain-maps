@@ -24,31 +24,38 @@
   <!--  <%#= f.number_field :quiz_id %>-->
   <!--</div>-->
   
+  <%= f.hidden_field :quiz_id, :value => @quiz.id %>
+  <%= f.hidden_field :student_id, :value => @stu.id %>
+  
   No of Questions in this quiz: <%= @quiz.questions.count %> <br>
-  <% @attempt.responses.new %>
-  <% @quiz.questions.each do |question| %>
+  <% @quiz.questions.each_with_index do |question,index| %>
   
   
   <strong>Question: <%= question.content %><br></strong>
   No of Options for this questions: <%= question.answers.count %><br>
   
-  <% question.answers.each do |answer| %>
+  
     <%#= answer %>
       
       
     
-      <%= f.fields_for :responses do |builder| %>
+      <%= fields_for "attempt[responses_attributes][#{index}]" do |builder| %>
       
         <!--%= f.label calendar_color.id do %> >-->
         <%#= index %>
-        <%= builder.radio_button :answer_id, "1" %> <%= answer.content %><br>
+        <% question.answers.each do |answer| %>
+          <%#= builder.hidden_field :answer_id, :value => answer.id %>
+          <%= builder.radio_button :answer_id, answer.id %> <%= answer.content %><br>
+        <% end %>
+        <%#= builder.radio_button :is_selected, "1" %> <%#= answer.content %><br>
         <%= builder.hidden_field :question_id, :value => question.id %>
-        <%= builder.hidden_field :answer_id, :value => answer.id %>
+        <%= builder.hidden_field :student_id, :value => @stu.id %>
+        
         <%# builder.hidden_field :student_id, :value =>  %>
         
         
       <% end %>
-    <% end %>
+    <%# end %>
   <% end %>
   
   <div class="actions">

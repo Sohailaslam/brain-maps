@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
     # Define abilities for the passed in user here. For example:
     #
-    user ||= User.new # guest user (not logged in)
+    # user ||= User.new # guest user (not logged in)
     if user.admin?
       can :manage, :all
       # can :manage, :educator
@@ -13,17 +13,18 @@ class Ability
       can :create,Course
       can :update,Course, :user_id => user.id
       can :destroy,Course, :user_id => user.id
+      
       can :read,Course do |course|
         course.user_id == user.id
-        puts "bbaadd",course.user_id,user.id,course.user_id==user.id
+        # puts "index",course.user_id,user.id,course.user_id!=user.id
+        # false
       end
       
+      can :manage,Quiz, :course => { :user_id => user.id }
       
       can :manage,Enrolled
       can :update,Educator,:user_id => user.id
-      can :manage, Quiz do |quiz|
-        quiz.course.user_id == user.id
-      end
+      
       
     elsif user.student?
       cannot :manage,Course

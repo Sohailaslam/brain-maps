@@ -2,6 +2,7 @@ class Student < ActiveRecord::Base
     has_many :courses,:through => :enrolled
     has_many :enrolled
     belongs_to :user
+    has_many :attempts
     
     # validates :id, uniqueness: true, presence: true
     # validates :user_id, presence: true

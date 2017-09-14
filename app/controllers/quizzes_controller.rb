@@ -1,11 +1,26 @@
 class QuizzesController < ApplicationController
+
   before_action :set_quiz, only: [:show, :edit, :update, :destroy]
   before_action :set_course
+  
+  
+  
+  load_and_authorize_resource :course
+  load_and_authorize_resource :quiz, :through => :course
+  
+  # GET /quizzes/1/results
+  
+  
+    
+    
+    
+    
+    
 
   # GET /quizzes
   # GET /quizzes.json
   def index
-    @quizzes = @course.quiz.all
+    @quizzes = @course.quizzes.all
   end
 
   # GET /quizzes/1
@@ -15,7 +30,7 @@ class QuizzesController < ApplicationController
 
   # GET /quizzes/new
   def new
-    @quiz = @course.quiz.new
+    @quiz = @course.quizzes.new
     1.times do
       question = @quiz.questions.build
       4.times { question.answers.build }
@@ -29,7 +44,7 @@ class QuizzesController < ApplicationController
   # POST /quizzes
   # POST /quizzes.json
   def create
-    @quiz = @course.quiz.new(quiz_params)
+    @quiz = @course.quizzes.new(quiz_params)
     respond_to do |format|
       if @quiz.save
         format.html { redirect_to course_quiz_url(@course,@quiz), notice: 'Quiz was successfully created.' }
@@ -74,9 +89,10 @@ class QuizzesController < ApplicationController
     def set_course
       @course = Course.find(params[:course_id])
     end
-
+    
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     def quiz_params
-      params.require(:quiz).permit(:name, :course_id, :status_type, :number_questions,questions_attributes:[:id,:content,answers_attributes:[:id,:content,:question_id,:is_correct]])
+      params.require(:quiz).permit(:name, :course_id, :status_type, :number_questions,questions_attributes:[:id,:content,:_destroy,:learning_outcome_id,answers_attributes:[:id,:content,:question_id,:is_correct]])
     end
 end
