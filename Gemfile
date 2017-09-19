@@ -52,4 +52,6 @@ gem 'cancancan'
 # gem 'rolify'
 gem "cocoon"
 gem "chartkick"
-
+# gem 'googlecharts', '~> 1.6', '>= 1.6.12'
+# gem 'gchartrb'
+gem 'histogram'

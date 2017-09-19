@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       end
     end
   end
+  
+  get 'dashboard',to: 'dashboard#dashboard'
   devise_for :users,controllers: { registrations: 'users/registrations' }
   resources :educators
   # devise_for :users
@@ -18,7 +20,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'courses#index'
+  root 'dashboard#dashboard'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

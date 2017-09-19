@@ -1,0 +1,20 @@
+<div class="container">
+    <% if current_user.educator? %>
+        <h2>Welcome <%=@edu.first_name %></h2><br>
+        <%= link_to 'Manage Students',new_enrolled_path  %><br>
+        <%= link_to 'Manage Courses',courses_path  %><br>
+        <%#= link_to 'Quizzes',course_quizzes_path(@course)  %><br>
+    <% end %>
+
+    
+    <% if current_user.student? %>
+        <h2>Welcome <%=@stu.first_name %></h2><br>
+        <%= link_to 'Manage Courses',courses_path  %><br>
+        <%#= link_to 'Quizzes',course_quizzes_path(@course)  %><br>
+        <%#= link_to 'Results',course_quizzes_path(@course)  %><br>
+            
+    <% end %>
+    
+    
+    
+</div>

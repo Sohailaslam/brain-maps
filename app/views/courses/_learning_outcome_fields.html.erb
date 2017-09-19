@@ -1,5 +1,7 @@
 <div class="nested-fields">
-    <%= f.label :title %><br>
+    <!--<%#= f.label : %><br>-->
+    <label>Learning Outcome Title</label><br>
     <%= f.text_field :title %><br>
+    <%#= f.hidden_field :course_id, :value =>  %>
     <%= link_to_remove_association "Remove Learning Outcome", f %>
 </div>

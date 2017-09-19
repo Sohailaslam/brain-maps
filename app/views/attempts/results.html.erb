@@ -21,7 +21,8 @@
   <ol>
     <% @quiz_questions.each do |question|%>
     <li>
-      <%=question.content %>
+      <%=question.content %><br>
+      Learning Outcome:<%=question.learning_outcome.title %>
     <h4>Options</h4>
       <ul>
         <% question.answers.each do |ans|%>
@@ -29,10 +30,9 @@
           <%= ans.content %> <% if (ans.is_correct) %>(Correct Answer)<% end %>
         </li>
         <% end %>
-        Your Answer was : <%= @responses.find_by_question_id(question.id).answer.content %>
+        Submitted Answer was : <%= @responses.find_by_question_id(question.id).answer.content %>
         
       </ul>
-      
     
       
     </li>
@@ -40,22 +40,13 @@
   </ol>
   
 </p>
+<h2>Learning Outcome Progress using Bar Graph</h2>
+<%#=  Attempt.graph(@attempt) %>
+<%=  column_chart Attempt.graph(@attempt) ,discrete:true,height: '500px',width: '500px', title:'Learning Outcome Progress',library: {hAxis: {title: "Learning Outcomes"}, vAxis: {title: "No of Correct Questions"} } %>
 
-<%= column_chart @responses.group(:is_correct).count(:question_id),discrete:true,height: '200px',width: '500px', :library => {
-          title: {text: 'Sporters by age', x: -20},
-          yAxis: {
-             allowDecimals: false,
-             title: {
-                 text: 'Ages count'
-             }
-          },
-          xAxis: {
-             title: {
-                 text: 'Age'
-             }
-          }
-        } %>
-
+<%#= column_chart @responses.group(:is_correct).count(:question_id),discrete:true,height: '200px',width: '500px' %>
+<!--hAxis: {ticks: x_range.to_a},-->
+<!--  vAxis: {ticks: y_range.to_a}-->
 
 
 <%#= link_to 'Edit', edit_course_quiz_path(@course,@quiz) %> |

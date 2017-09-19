@@ -8,9 +8,9 @@ class Course < ActiveRecord::Base
     validates_length_of :id,:maximum => 8
     
     has_many :students,:through => :enrolled
-    has_many :enrolled
-    has_many :quizzes
-    has_many :learning_outcomes
+    has_many :enrolled,:dependent =>:destroy
+    has_many :quizzes,:dependent =>:destroy
+    has_many :learning_outcomes,:inverse_of => :course,:dependent =>:destroy
     
     accepts_nested_attributes_for :learning_outcomes, :reject_if => lambda { |a| a[:title].blank? }, :allow_destroy => true
     

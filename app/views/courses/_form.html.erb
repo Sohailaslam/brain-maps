@@ -25,14 +25,15 @@
     <%= f.label :Code %><br>
     <%= f.text_field :id %>
   </div>
+  <h3>Add Learning Outcomes</h3>
   <div id="learning_outcomes">
     
     <%= f.fields_for :learning_outcomes do |builder| %>
-        <%= render "learning_outcome_fields", :f => builder %>
-        <div class="links">
-          <%= link_to_add_association 'Add Learning Outcome', f, :learning_outcomes %>
-        </div>
-      <% end %>
+      <%= render "learning_outcome_fields", :f => builder %>
+      <div class="links">
+        <%= link_to_add_association 'Add Learning Outcome', f, :learning_outcomes %>
+      </div>
+    <% end %>
   </div>
   
   

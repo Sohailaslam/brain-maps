@@ -5,8 +5,24 @@ class AttemptsController < ApplicationController
   before_action :set_student
   # load_and_authorize_resource :except => [:results]
   
+  load_and_authorize_resource :quiz
+  load_and_authorize_resource :attempt, :through => :quiz
+  # require 'google_chart'
+  require 'histogram/array'
   
   
+  def all_class_scores(quiz)
+    all_quiz_attempts = quiz.attempts
+    score_list = []
+    all_quiz_attempts.each do |attempt|
+        attempt_correct_responses = attempt.responses.where(is_correct:true).count #score for each attempt
+        score_list.push(attempt_correct_responses)
+    end
+    # score_list = [1,2,3,4,4,5,5,5,6,7,8,9,10]
+    # score_list = score_list.histogram
+
+    return score_list
+  end
   
   
   
@@ -23,6 +39,8 @@ class AttemptsController < ApplicationController
     else
       @responses = @attempt.responses
     end
+    
+    # authorize! :results,@responses
         
   end
     
@@ -30,7 +48,16 @@ class AttemptsController < ApplicationController
   # GET /attempts
   # GET /attempts.json
   def index
-    @attempts = Attempt.all
+    # average for lerning outcome
+    # question that was correct most of the times
+    # percentage for each student
+    
+    
+    # class average
+    # bar graph for each student like class marker
+    @attempts = @quiz.attempts.all
+    
+    @class_scores = all_class_scores(@quiz)
   end
 
   # GET /attempts/1
@@ -57,7 +84,7 @@ class AttemptsController < ApplicationController
 
     respond_to do |format|
       if @attempt.save
-        format.html { redirect_to course_quiz_results_url(@course,@quiz), notice: 'Quiz Responses successfully submitted' }
+        format.html { redirect_to course_quiz_attempt_results_url(@course,@quiz,@attempt), notice: 'Quiz Responses successfully submitted' }
         format.json { render :show, status: :created, location: @attempt }
       else
         format.html { render :new }
@@ -71,7 +98,7 @@ class AttemptsController < ApplicationController
   def update
     respond_to do |format|
       if @attempt.update(attempt_params)
-        format.html { redirect_to course_quiz_results_url(@course,@quiz), notice: 'Quiz Responses successfully updated.' }
+        format.html { redirect_to course_quiz_attempt_results_url(@course,@quiz,@attemt), notice: 'Quiz Responses successfully updated.' }
         format.json { render :show, status: :ok, location: @attempt }
       else
         format.html { render :edit }

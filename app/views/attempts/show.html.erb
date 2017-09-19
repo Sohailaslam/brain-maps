@@ -15,5 +15,5 @@
   <%= @attempt.quiz_id %>
 </p>
 
-<%= link_to 'Edit', edit_attempt_path(@attempt) %> |
-<%= link_to 'Back', attempts_path %>
+<%= link_to 'Edit', edit_course_quiz_attempt_path(@course,@quiz,@attempt) %> |
+<%= link_to 'Back', course_quiz_attempts_path(@course,@quiz) %>

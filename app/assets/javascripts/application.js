@@ -16,5 +16,4 @@
 //= require_tree .
 //= require bootstrap.min
 //= require cocoon
-//= require Chart.bundle
 //= require chartkick

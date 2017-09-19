@@ -17,23 +17,28 @@
 
   <tbody>
     <% @quizzes.each do |quiz| %>
-      <tr>
-        <td><%= quiz.name %></td>
-        <td><%= quiz.course_id %></td>
-        <td><%= quiz.status_type %></td>
-        <td><%= quiz.questions.count %></td>
+      <% if can? :read, quiz %>
+      
+        <tr>
+          <td><%= quiz.name %></td>
+          <td><%= quiz.course_id %></td>
+          <td><%= quiz.status_type %></td>
+          <td><%= quiz.questions.count %></td>
+          
+          
+          <% if current_user.student? %>
+            <td><%= link_to 'Attempt the Quiz', new_course_quiz_attempt_url(@course,quiz) %></td>
+          <% elsif(current_user.educator?) %>
+            <td><%= link_to 'Show', course_quiz_url(@course,quiz) %></td>
+            <td><%= link_to 'Edit', edit_course_quiz_path(@course,quiz) %></td>
+            <td><%= link_to 'Destroy', [@course,quiz], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'View All Attempts and Class Stats', course_quiz_attempts_url(@course,quiz) %></td>
+          <% end %>
         
         
-        <% if current_user.student? %>
-          <td><%= link_to 'Attempt the Quiz', new_course_quiz_attempt_url(@course,quiz) %></td>
-        <% elsif(current_user.educator?) %>
-          <td><%= link_to 'Show', course_quiz_url(@course,quiz) %></td>
-          <td><%= link_to 'Edit', edit_course_quiz_path(@course,quiz) %></td>
-          <td><%= link_to 'Destroy', [@course,quiz], method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <% end %>
-      
-      
-      </tr>
+        </tr>
+        
+      <% end %>
     <% end %>
   </tbody>
 </table>

@@ -7,8 +7,8 @@
   <thead>
     <tr>
       <th>Student</th>
-      <th>Number of attempts</th>
       <th>Quiz ID</th>
+      <th>Score</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,18 +16,33 @@
   <tbody>
     <% @attempts.each do |attempt| %>
       <tr>
-        <td><%= attempt.student_id %></td>
-        <td><%= attempt.number_of_attempts %></td>
-        <td><%= attempt.quiz_id %></td>
-        <td><%= link_to 'Show', course_quiz_attempt_path(@course,@quiz,attempt) %></td>
-        <td><%= link_to 'Edit', edit_course_quiz_attempt_path(@course,@quiz,attempt) %></td>
-        <td><%= link_to 'Destroy', [@course,@quiz,attempt], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= Student.find(attempt.student_id).user_id %></td>
+        <td><%= Quiz.find(attempt.quiz_id).name %></td>
+        <td> <%=attempt.responses.where(is_correct:true).count %>/<%= attempt.quiz.questions.count %> </td>
+        <td><%= link_to 'Show Results', course_quiz_attempt_results_path(@course,@quiz,attempt) %></td>
+        <!--<td><%#= link_to 'Show', course_quiz_attempt_path(@course,@quiz,attempt) %></td>-->
+        <!--<td><%#= link_to 'Edit', edit_course_quiz_attempt_path(@course,@quiz,attempt) %></td>-->
+        <!--<td><%#= link_to 'Destroy', [@course,@quiz,attempt], method: :delete, data: { confirm: 'Are you sure?' } %></td>-->
       </tr>
+      
+      
     <% end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Attempt', new_course_quiz_attempt_path %>
+<%= link_to 'New Attempt', new_course_quiz_attempt_path %><br>
+
+
+<%= @class_scores  %>
+<h2>Class Score Bar Graph</h2>
+<%= bar_chart class_results(@quiz),discrete: true,height: '100px',width: '400px', xtitle: "Score", ytitle: "Student" %>
+
+<%= learning_outcome_wise_avg(@quiz) %>
+<h2>Learning Outcome Wise Average</h2>
+<%= column_chart learning_outcome_wise_avg(@quiz),discrete: true,height: '300px',width: '400px', xtitle: "Learning Outcome", ytitle: "Average Score" %>
+
+
+<%#= @line %>
 </div>

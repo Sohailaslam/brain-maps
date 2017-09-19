@@ -23,6 +23,7 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
+    
   end
 
   # GET /courses/new
@@ -94,7 +95,7 @@ class CoursesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def course_params
-      params.require(:course).permit(:id,:name,:stduent_id,:status,learning_outcomes_attributes:[:id,:title,:course_id])
+      params.require(:course).permit(:id,:user_id,:name,:stduent_id,:status,learning_outcomes_attributes:[:id,:_destroy,:course_id,:title])
       # params.require(:educator).permit(:user_id, :name, :role)
     end
 end

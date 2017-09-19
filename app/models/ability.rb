@@ -13,11 +13,8 @@ class Ability
       can :create,Course
       can :update,Course, :user_id => user.id
       can :destroy,Course, :user_id => user.id
-      
       can :read,Course do |course|
         course.user_id == user.id
-        # puts "index",course.user_id,user.id,course.user_id!=user.id
-        # false
       end
       
       can :manage,Quiz, :course => { :user_id => user.id }
@@ -25,18 +22,31 @@ class Ability
       can :manage,Enrolled
       can :update,Educator,:user_id => user.id
       
-      
+      can :manage,Attempt
+      cannot :create,Attempt
+      can :results,Attempt
     elsif user.student?
+      cannot :manage ,Attempt
+      # can 
+      
       cannot :manage,Course
       can :read, [Course]
-      cannot :manage,Educator
-      cannot :manage,Student
-      can :update,Student,:user_id => user.id
       
-      can :read,Quiz,:status_type =>"active"
+      cannot :manage,Educator
       can :update,Enrolled,:status_type do |enrolled|
         enrolled.student_id == Student.find_by_user_id(user.id).id
       end
+      
+      cannot :manage,Student
+      can :update,Student,:user_id => user.id
+      
+      can :read,Quiz,:status_type =>1
+      
+      
+      # cannot :read, Attempt
+      can :manage,Attempt
+      can :create,Attempt,:quiz =>{:status_type => 1}
+      
       # can :manage, Enrolled
       # can :update,Enrolled,:student_id => Student.where(user_id:user.id).first
       

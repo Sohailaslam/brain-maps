@@ -26,6 +26,10 @@ class QuizzesController < ApplicationController
   # GET /quizzes/1
   # GET /quizzes/1.json
   def show
+    if(current_user.student?)
+      flash[:notice] = "Students cannot access this page"
+      redirect_to course_quizzes_url(@course)
+    end
   end
 
   # GET /quizzes/new
