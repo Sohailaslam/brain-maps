@@ -3,6 +3,17 @@ class Enrolled < ActiveRecord::Base
     belongs_to :course
     belongs_to :student
     
+    
+    attr_accessor :user_id
+    # validates :student_id, presence: true
+    validates :user_id, presence: true
+    validates :course_id, presence: true
+    # validates_length_of :id,:maximum => 8
+    
+    
+    
+    
+    
     # validate :student_id_should_be_valid
     
     # def student_id_should_be_valid

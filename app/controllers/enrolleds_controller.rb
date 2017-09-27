@@ -26,15 +26,30 @@ class EnrolledsController < ApplicationController
   # POST /enrolleds.json
   def create
     @enrolled = Enrolled.new(enrolled_params)
-
-    respond_to do |format|
-      if @enrolled.save
-        format.html { redirect_to @enrolled, notice: 'Enrolled was successfully created.' }
-        format.json { render :show, status: :created, location: @enrolled }
-      else
-        format.html { render :new }
-        format.json { render json: @enrolled.errors, status: :unprocessable_entity }
+    
+    # puts "hello world",Student.exists?(user_id: params[:enrolled][:user_id])
+    
+    if Student.exists?(user_id: params[:enrolled][:user_id])
+      # puts "we are here"
+      student_id = Student.find_by_user_id(params[:enrolled][:user_id])
+      @enrolled.student_id = student_id.id
+      # student_id
+      puts "enrolled", student_id
+      
+      respond_to do |format|
+        if @enrolled.save
+          format.html { redirect_to @enrolled, notice: 'Enrolled was successfully created.' }
+          format.json { render :show, status: :created, location: @enrolled }
+        else
+          format.html { render :new }
+          format.json { render json: @enrolled.errors, status: :unprocessable_entity }
+        end
       end
+    
+    else
+      # puts "we are in else"
+      flash[:notice] = "Student does not exist"
+      redirect_to new_enrolled_path
     end
   end
 
@@ -70,6 +85,6 @@ class EnrolledsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def enrolled_params
-      params.require(:enrolled).permit(:student_id, :course_id,:status_type)
+      params.require(:enrolled).permit(:student_id, :course_id,:status_type,:user_id)
     end
 end

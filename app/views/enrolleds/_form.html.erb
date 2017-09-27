@@ -11,18 +11,21 @@
     </div>
   <% end %>
 
-  <!--<div class="field">-->
-  <!--  <%#= f.label :student %><br>-->
-  <!--  <%#= f.text_field :student_id %>-->
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.text_field :user_id %>
   </div>
+  
   <!--<div class="field">-->
   <!--  <%#= f.label :course %><br>-->
   <!--  <%#= f.text_field :course_id %>-->
   <!--</div>-->
-  <div class="field">
-    <%= f.label :zID %><br>
-    <%= f.collection_select :student_id,Student.all,:id,:user_id %><br/>
-  </div>
+  <!--<div class="field">-->
+    <%#= f.label :zID %>
+    <!--<br>-->
+    <%#= f.collection_select :student_id,Student.all,:id,:user_id %>
+    <!--<br/>-->
+  <!--</div>-->
   
   
   <div class="field">
@@ -35,6 +38,7 @@
     <!--<= f.number_field :event_type %>-->
     <%= f.select(:status_type, Enrolled.status_types.keys.map {|key| [key.humanize, key]}) %>
   </div>
+  <br>
   <div class="actions">
     <%= f.submit %>
   </div>
